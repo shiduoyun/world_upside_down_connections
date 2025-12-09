@@ -1,0 +1,363 @@
+const bookNodes = [
+  {
+    "id": "karl_marx_1867_das_kapital",
+    "year": 1867,
+    "author": "Karl Marx",
+    "shortTitle": "Das Kapital",
+    "title": "Das Kapital",
+    "level": 1,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "toni_morrison_1973_sula",
+    "year": 1973,
+    "author": "Toni Morrison",
+    "shortTitle": "Sula",
+    "title": "Sula",
+    "level": 3,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "michel_foucault_1976_we_other_victorians_the_repressive_hypothesis_from_the_history_of_sexuality_volume_i",
+    "year": 1976,
+    "author": "Michel Foucault",
+    "shortTitle": "“We Other Victorians,” “The Repressiv...",
+    "title": "“We Other Victorians,” “The Repressive Hypothesis” from The History of Sexuality Volume I",
+    "level": 1,
+    "concepts": "Power, Discourse, Norms",
+    "summary": "Power is polymorphic. Discourses are themselves products and producers of knowledge.\n"
+  },
+  {
+    "id": "michel_foucault_1976_14_january_1976_society_must_be_defended",
+    "year": 1976,
+    "author": "Michel Foucault",
+    "shortTitle": "14 January 1976 \"Society Must Be Defe...",
+    "title": "14 January 1976 \"Society Must Be Defended\"",
+    "level": 1,
+    "concepts": "Power",
+    "summary": "Look at the fringe of power"
+  },
+  {
+    "id": "michel_foucault_1976_17_march_1976_society_must_be_defended",
+    "year": 1976,
+    "author": "Michel Foucault",
+    "shortTitle": "17 March 1976 \"Society Must Be Defended",
+    "title": "17 March 1976 \"Society Must Be Defended",
+    "level": 1,
+    "concepts": "Biopower",
+    "summary": ""
+  },
+  {
+    "id": "michel_foucault_1978_right_of_death_and_power_over_life_history_of_sexuality_vol_i",
+    "year": 1978,
+    "author": "Michel Foucault",
+    "shortTitle": "\"Right of Death and Power over Life\" ...",
+    "title": "\"Right of Death and Power over Life\" History of Sexuality Vol. I",
+    "level": 1,
+    "concepts": "Biopower",
+    "summary": "Biopower is population level exercise over the"
+  },
+  {
+    "id": "edward_said_1978_orientalism",
+    "year": 1978,
+    "author": "Edward Said",
+    "shortTitle": "Orientalism",
+    "title": "Orientalism",
+    "level": 2,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "crc_1981_combahee_river_collective_statement",
+    "year": 1981,
+    "author": "CRC",
+    "shortTitle": "\"Combahee River Collective Statement\"",
+    "title": "\"Combahee River Collective Statement\"",
+    "level": 2,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "cedric_robinson_1983_black_marxism",
+    "year": 1983,
+    "author": "Cedric Robinson",
+    "shortTitle": "Black Marxism",
+    "title": "Black Marxism",
+    "level": 1,
+    "concepts": "Racial capitalism (originator of term)",
+    "summary": ""
+  },
+  {
+    "id": "bell_hooks_1984_feminist_theory_from_margin_to_center",
+    "year": 1984,
+    "author": "bell hooks",
+    "shortTitle": "Feminist Theory, From Margin to Center",
+    "title": "Feminist Theory, From Margin to Center",
+    "level": 2,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "hortense_j_spillers_1987_mama_s_baby_papa_s_maybe_an_american_grammar_book",
+    "year": 1987,
+    "author": "Hortense J. Spillers",
+    "shortTitle": "\"Mama's Baby, Papa's Maybe: An Americ...",
+    "title": "\"Mama's Baby, Papa's Maybe: An American Grammar Book\"",
+    "level": 3,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "gayatri_chakravorty_spivak_1988_can_the_subaltern_speak",
+    "year": 1988,
+    "author": "Gayatri Chakravorty Spivak",
+    "shortTitle": "Can the Subaltern Speak?",
+    "title": "Can the Subaltern Speak?",
+    "level": 3,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "kimberle_crenshaw_1991_demarginalizing_the_intersection",
+    "year": 1991,
+    "author": "Kimberlé Crenshaw",
+    "shortTitle": "“Demarginalizing the Intersection”",
+    "title": "“Demarginalizing the Intersection”",
+    "level": 1,
+    "concepts": "Intersectionality, biopower, racical capitism, Objectvity, subjectivity ",
+    "summary": "Where at the age of 28, Crenshaw coins the term intersectionaity as a legal reform tatic to get at the cross-current oppressions faced by those with intersecting margiliazed idenities, specifically Black women in the context of court logic. She notes intersectinality as a \"framework\" in particular "
+  },
+  {
+    "id": "ian_haney_lopez_1996_white_by_law",
+    "year": 1996,
+    "author": "Ian Haney López",
+    "shortTitle": "White By Law",
+    "title": "White By Law",
+    "level": 1,
+    "concepts": "Naturalization, Citizenship, construction of race and gender ",
+    "summary": "A histrical analysis of the contruction of race through legal reform / explores \"racical fabrication\" "
+  },
+  {
+    "id": "stuart_hall_1997_representation",
+    "year": 1997,
+    "author": "Stuart Hall",
+    "shortTitle": "Representation",
+    "title": "Representation",
+    "level": 1,
+    "concepts": "Power, Discourse, Connotative/ Denotative, Signification, Representation, Culture\n",
+    "summary": "Representation is a shared system of codes, whose meaning is encoded. Nothing is outside of discourse"
+  },
+  {
+    "id": "wendy_brown_1997_the_impossibility_of_women_s_studies",
+    "year": 1997,
+    "author": "Wendy Brown",
+    "shortTitle": "“The Impossibility of Women’s Studies”",
+    "title": "“The Impossibility of Women’s Studies”",
+    "level": 2,
+    "concepts": "Intersectionality, Cultural studies",
+    "summary": "Is seen as time marking conflict within the larger academic community around the piloting theories on the future of women studies/ “feminist projects” "
+  },
+  {
+    "id": "jose_munoz_1999_disidentifications",
+    "year": 1999,
+    "author": "José Muñoz",
+    "shortTitle": "Disidentifications",
+    "title": "Disidentifications",
+    "level": 3,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "siobahn_somerville_2000_queering_the_color_line",
+    "year": 2000,
+    "author": "Siobahn Somerville",
+    "shortTitle": "Queering the Color Line",
+    "title": "Queering the Color Line",
+    "level": 2,
+    "concepts": "Critical Race Theory, binary systems, normativity ",
+    "summary": "The bifurcation of both race (black and white) and sexulaity (hetreo vs homo) in the late 19th century are deeply intertwinted "
+  },
+  {
+    "id": "eithne_luibheid_2002_entry_denied",
+    "year": 2002,
+    "author": "Eithne Luibhéid",
+    "shortTitle": "Entry Denied",
+    "title": "Entry Denied",
+    "level": 1,
+    "concepts": "Peripheral Sexualities, discplinary power",
+    "summary": "Border surveilled and controlled the immigrants within  its network. "
+  },
+  {
+    "id": "ann_laura_stoler_2002_carnal_knowledge_and_imperial_power",
+    "year": 2002,
+    "author": "Ann Laura Stoler",
+    "shortTitle": "Carnal Knowledge and Imperial Power",
+    "title": "Carnal Knowledge and Imperial Power",
+    "level": 1,
+    "concepts": "Discourse on Race, Carnality",
+    "summary": "The introduction reintroduces Foucault's claim that sexuality was “originally, historically bourgeois\" and reminds us that Foucault often had an elusive and suggestive treatment of race. This text will approach the way that colonial policies led to European distinctions of national character. It will also approach the study of comparative colonialisms and the underlying assumptions that serve the ability to compare. The author directly states their goal of drawing on Foucault’s insights to think about how the making of race has figured in placing sexuality at the center of imperial politics."
+  },
+  {
+    "id": "roderick_ferguson_2003_aberrations_in_black",
+    "year": 2003,
+    "author": "Roderick Ferguson",
+    "shortTitle": "Aberrations in Black",
+    "title": "Aberrations in Black",
+    "level": 1,
+    "concepts": "Racialized gender",
+    "summary": "Racialized non-heteronormativity helps to articulate heteropatriarchy as universal.  Marx's silence on race, gender, and sexuality therefore reproduce the bourgeois' ideals of the universality of race, gender, and sexuality and their norms."
+  },
+  {
+    "id": "lisa_duggan_2003_the_twilight_of_equality",
+    "year": 2003,
+    "author": "Lisa Duggan",
+    "shortTitle": "The Twilight of Equality",
+    "title": "The Twilight of Equality",
+    "level": 1,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "eve_kosofsky_sedgwick_2003_touching_feeling_affect_pedagogy_performativity",
+    "year": 2003,
+    "author": "Eve Kosofsky Sedgwick",
+    "shortTitle": "Touching Feeling: Affect, Pedagogy, P...",
+    "title": "Touching Feeling: Affect, Pedagogy, Performativity",
+    "level": 3,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "sylvia_federici_2004_caliban_and_the_witch",
+    "year": 2004,
+    "author": "Sylvia Federici",
+    "shortTitle": "Caliban and the Witch",
+    "title": "Caliban and the Witch",
+    "level": 1,
+    "concepts": "Reproductive labor, gendered capitalism, primitive accumulation",
+    "summary": "Federici intervenes in Marxist thought that a key, and overlooked, aspect of primitive accumulation and the transition from feudalism to capitalism in Western Europe was the accumulation and production of differences and through those differences hierarchy.  Federici is particularly interested in the production of new social meaning of woman that accompanied and laid the ground work for capitalism.  Women's labor in this period became devalued, excluded from the new capitalist markets, and figured as a communal, natural resource, a new commons in the wake of land enclosure."
+  },
+  {
+    "id": "angela_davis_2005_abolition_democracy_beyond_empire_prisons_and_torture",
+    "year": 2005,
+    "author": "Angela Davis",
+    "shortTitle": "Abolition democracy : beyond empire, ...",
+    "title": "Abolition democracy : beyond empire, prisons, and torture",
+    "level": 1,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "jasbir_puar_2007_terrorist_assemblages",
+    "year": 2007,
+    "author": "Jasbir Puar",
+    "shortTitle": "Terrorist Assemblages",
+    "title": "Terrorist Assemblages",
+    "level": 3,
+    "concepts": "",
+    "summary": "The racial construct of terrorist already carries sexual meaning.  The terrorist is a queer figure, a figure of deviant, aberrant sexuality."
+  },
+  {
+    "id": "maria_lugones_2007_colonial_modern_gender_system",
+    "year": 2007,
+    "author": "Maria Lugones",
+    "shortTitle": "“Colonial/Modern Gender System”",
+    "title": "“Colonial/Modern Gender System”",
+    "level": 2,
+    "concepts": "Construcation of gender through race ",
+    "summary": "Historical analysis of the colonical spanish oppression of Native populations through the lense of gender andsex construction "
+  },
+  {
+    "id": "julian_carter_2007_the_heart_of_whiteness_the_search_for_norma_and_the_birds_and_the_bees_and_the_making_of_race",
+    "year": 2007,
+    "author": "Julian Carter",
+    "shortTitle": "The Heart of Whiteness, The Search fo...",
+    "title": "The Heart of Whiteness, The Search for Norma” and “The Birds and the Bees and the Making of Race”\n",
+    "level": 1,
+    "concepts": "Discourse on Normalcy, Eugenics",
+    "summary": "Sex education was a technology for the homogenization of whiteness, using frankness alongside reticence about eroticism. Discourses set a norm used to police a community"
+  },
+  {
+    "id": "judith_butler_2009_performativity_precarity_and_sexual_politics",
+    "year": 2009,
+    "author": "Judith Butler",
+    "shortTitle": "Performativity, Precarity, and Sexual...",
+    "title": "Performativity, Precarity, and Sexual Politics",
+    "level": 3,
+    "concepts": "",
+    "summary": "The il/legibility of performativity dictates the bio-political categories that one falls into and thus the precarity one is exposed to. "
+  },
+  {
+    "id": "dean_spade_2011_normal_life_rethinking_power_and_transphobia",
+    "year": 2011,
+    "author": "Dean Spade",
+    "shortTitle": "Normal Life “Rethinking Power and Tra...",
+    "title": "Normal Life “Rethinking Power and Transphobia”",
+    "level": 1,
+    "concepts": "Homonormativity, biopower",
+    "summary": "Spade applies Foucault's concepts of disciplinary power and bio-power in his investigation of the working of oppression of trans people, concluding that both are inadequately addressed by legal reform, particularly legal reform focused on \"what the law says about us\".  These forms of power are both always racialized and classed, with bio-power in particular functioning through the production of an \"us\" whose lives are to be fostered and a \"them\" that are threats and drains."
+  },
+  {
+    "id": "sarah_haley_2016_no_mercy_here",
+    "year": 2016,
+    "author": "Sarah Haley",
+    "shortTitle": "No Mercy Here",
+    "title": "No Mercy Here",
+    "level": 1,
+    "concepts": "Racial capitalism",
+    "summary": "The violence of the carceral system of the emerging Jim Crow South in the post re-construction era solidified the construct of normative, white womanhood through the oppositional construction of the Black female as other, queer, and disposable.  Because violence did the work of the producing these norms, Black women's resistance to the carceral violence constituted contestations of the this construction of racialized gender."
+  },
+  {
+    "id": "henry_giroux_2017_reading_hurricane_katrina",
+    "year": 2017,
+    "author": "Henry Giroux",
+    "shortTitle": "“Reading Hurricane Katrina”",
+    "title": "“Reading Hurricane Katrina”",
+    "level": 1,
+    "concepts": "Biopower, Necropolitics",
+    "summary": "Giroux is interested in how biopolitics of disposability function through the neoliberal paradigm of austerity and privatization in the wake of Hurricane Katrina to enact selective violence on the Black population of New Orleans."
+  },
+  {
+    "id": "robin_dg_kelley_2017_what_did_cedric_robinson_mean_by_racial_capitalism",
+    "year": 2017,
+    "author": "Robin DG Kelley",
+    "shortTitle": "“What Did Cedric Robinson Mean by Rac...",
+    "title": "“What Did Cedric Robinson Mean by Racial Capitalism?”",
+    "level": 1,
+    "concepts": "",
+    "summary": ""
+  },
+  {
+    "id": "daniel_hosang_2017_intersectionality_keywords",
+    "year": 2017,
+    "author": "Daniel HoSang",
+    "shortTitle": "“Intersectionality” (Keywords)",
+    "title": "“Intersectionality” (Keywords)",
+    "level": 2,
+    "concepts": "Intersectionality, neo-liberalism, Cultural studies",
+    "summary": "a review that summeraizes the cultural timeline of the word intersectionailty drawing from sources that date all the way back to the 1940s to present day where the term intersectinality can be drawn from/ influences shown. \"usageas of the keyword call attention to the particular forms of analysis,solidarity, and collective action...\" "
+  },
+  {
+    "id": "jennifer_nash_2019_black_feminism_reimagined",
+    "year": 2019,
+    "author": "Jennifer Nash",
+    "shortTitle": "Black Feminism Reimagined",
+    "title": "Black Feminism Reimagined",
+    "level": 2,
+    "concepts": "Intersectionality ",
+    "summary": "Adds Black cultural theory into the conversation of gender studies as a scholarship as well as the cultural contexts/implications of the term intersectionality "
+  },
+  {
+    "id": "ruth_wilson_gilmore_2020_geographies_of_racial_capitalism",
+    "year": 2020,
+    "author": "Ruth Wilson Gilmore",
+    "shortTitle": "Geographies of Racial Capitalism",
+    "title": "Geographies of Racial Capitalism",
+    "level": 1,
+    "concepts": "Racial capitalism",
+    "summary": "\"Capitalism requires inequality and racism enshrines it\""
+  }
+];
+
