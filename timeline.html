@@ -29,7 +29,7 @@
         }
         svg { display: block; }
 
-        /* Tooltip 样式增强 */
+        /* Tooltip */
         .tooltip {
             position: absolute;
             text-align: left;
@@ -57,10 +57,11 @@
         /* LINK */
         .link { fill: none; transition: all 0.3s; cursor: pointer; }
         .link.highlighted { stroke-opacity: 1; stroke-width: 3px; }
-        
+
         /* BOOK NODE DESIGN */
         .node circle { cursor: pointer; transition: all 0.3s; stroke: #fff; stroke-width: 2px; }
         .node:hover circle { stroke: #073642; stroke-width: 3px; }
+        .node.highlighted circle { stroke: #dc322f; stroke-width: 3px; fill: #fdf6e3; }
         
         /* COUNTOUR TO ADD READABAILITY */
         .node text { 
@@ -75,7 +76,7 @@
 </head>
 <body>
     
-    <h1>WGSS 300: Intellectual Genealogy Map</h1>
+    <h1>WGSS 300 Concept Map Timeline</h1>
     <p class="subtitle">Hover over circles for book details. <strong>Hover over connecting lines to see the relationship.</strong></p>
     
     <div id="chart-container"></div>
@@ -213,9 +214,24 @@
 
     // === 8. Interactions
 
+    // Utility helpers to sync highlights between nodes and all connected bezier links.
+    const highlightNodesForLink = (link, highlighted) => {
+        bookNodeGroup
+            .filter(n => n.id === link.source.id || n.id === link.target.id)
+            .classed("highlighted", highlighted);
+    };
+
+    const highlightLinksForNode = (node, highlighted) => {
+        linkPaths
+            .filter(l => l.source.id === node.id || l.target.id === node.id)
+            .classed("highlighted", highlighted)
+            .attr("stroke-opacity", highlighted ? 1 : 0.2);
+    };
+
     // 8.1 MOUSEOVER LINK TO SHOW RELATIONSHIP TOOLTIP
     linkPaths.on("mouseover", (event, d) => {
         d3.select(event.currentTarget).classed("highlighted", true).attr("stroke-opacity", 1);
+        highlightNodesForLink(d, true);
         // Bring to front
         event.currentTarget.parentNode.appendChild(event.currentTarget);
 
@@ -231,11 +247,14 @@
             .style("top", (event.pageY + 10) + "px");
     }).on("mouseout", (event, d) => {
         d3.select(event.currentTarget).classed("highlighted", false).attr("stroke-opacity", 0.2);
+        highlightNodesForLink(d, false);
         tooltip.style("opacity", 0);
     });
 
     // 8.2 NODE INTERACTIONS
     bookNodeGroup.on("mouseover", (event, d) => {
+        d3.select(event.currentTarget).classed("highlighted", true);
+        highlightLinksForNode(d, true);
         tooltip.style("opacity", 1)
             .html(`
                 <strong class="title">${d.title}</strong>
@@ -244,12 +263,14 @@
                 <span class="section-label">Key Concepts:</span>
                 <span style="color:#93a1a1">${d.concepts}</span>
                 
-                <span class="section-label">Summary for the Public Reader:</span>
+                <span class="section-label">Summary:</span>
                 <p style="margin:5px 0 0 0; color:#eee; font-style:italic;">${d.summary}</p>
             `)
             .style("left", (event.pageX + 15) + "px")
             .style("top", (event.pageY - 100) + "px");
     }).on("mouseout", (event, d) => {
+        d3.select(event.currentTarget).classed("highlighted", false);
+        highlightLinksForNode(d, false);
         tooltip.style("opacity", 0);
     });
     
