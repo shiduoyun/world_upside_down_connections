@@ -95,6 +95,12 @@
     // Merge nodes for simulation (books only)
     const allNodes = [...bookNodes];
 
+    // Link color scale by category
+    const linkCategories = Array.from(new Set(links.map(l => l.category || "Other")));
+    const linkColor = d3.scaleOrdinal()
+        .domain(linkCategories)
+        .range(["#d62728", "#2ca02c", "#9467bd", "#8c564b", "#17becf", "#ff7f0e", "#1f77b4"].slice(0, linkCategories.length));
+
     // === 2. CANVAS SETUP ===
     const margin = {top: 60, right: 100, bottom: 80, left: 150};
     const years = Array.from(new Set(bookNodes.map(d => d.year))).sort((a,b) => a-b);
@@ -153,13 +159,14 @@
     const linkData = links.map(l => {
         const src = bookNodes.find(n => n.id === l.source);
         const tgt = bookNodes.find(n => n.id === l.target);
-        return (src && tgt) ? { source: src, target: tgt, relation: l.relation } : null;
+        return (src && tgt) ? { source: src, target: tgt, relation: l.relation, category: l.category || "Other" } : null;
     }).filter(d => d);
 
     const linkPaths = svg.selectAll(".link")
         .data(linkData)
         .enter().append("path")
         .attr("class", "link")
+        .attr("stroke", d => linkColor(d.category))
         .attr("d", d => {
             const sx = d.source.x, sy = d.source.y;
             const tx = d.target.x, ty = d.target.y;

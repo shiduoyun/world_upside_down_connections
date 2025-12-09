@@ -55,7 +55,8 @@ conn_links <- conn %>%
     target_key = str_c(slugify(to_author), "|", to_work_slug),
     source = unname(work_lookup[source_key]),
     target = unname(work_lookup[target_key]),
-    relation = explanation
+    relation = explanation,
+    category = category
   )
 
 # Warn on unmatched rows
@@ -67,7 +68,7 @@ if (nrow(missing) > 0) {
 
 conn_links <- conn_links %>%
   filter(!is.na(source), !is.na(target)) %>%
-  select(source, target, relation)
+  select(source, target, relation, category)
 
 # Serialize to JS
 json_body <- toJSON(conn_links, auto_unbox = TRUE, pretty = TRUE)
