@@ -10,18 +10,19 @@
     <style>
         html, body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f8f9fa;
+            background-color: #fdf6e3;
+            color: #657b83;
             margin: 20px;
             overflow-x: auto; /* allow horizontal scrolling for wide timelines */
         }
-        h1 { text-align: center; color: #333; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+        h1 { text-align: center; color: #586e75; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #93a1a1; font-size: 14px; margin-bottom: 20px; }
         
         #chart-container {
             width: 100%;
             overflow-x: auto;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            background: #fefbec;
+            box-shadow: 0 4px 8px rgba(88,110,117,0.12);
             border-radius: 12px;
             padding: 30px 0;
             min-width: 1300px;
@@ -36,41 +37,40 @@
             padding: 15px;
             font-size: 13px;
             line-height: 1.5;
-            background: rgba(30, 30, 30, 0.95);
-            color: #fff;
+            background: rgba(7, 54, 66, 0.95); /* base03 */
+            color: #eee8d5;
             border-radius: 8px;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.2s;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 15px rgba(7,54,66,0.4);
             z-index: 1000;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(147,161,161,0.4);
         }
-        .tooltip strong.title { font-size: 15px; color: #ffdd57; display: block; margin-bottom: 4px; }
-        .tooltip .meta { color: #bbb; font-size: 12px; margin-bottom: 10px; display: block; }
-        .tooltip .section-label { font-weight: bold; color: #ddd; margin-top: 8px; display: block; }
+        .tooltip strong.title { font-size: 15px; color: #b58900; display: block; margin-bottom: 4px; }
+        .tooltip .meta { color: #93a1a1; font-size: 12px; margin-bottom: 10px; display: block; }
+        .tooltip .section-label { font-weight: bold; color: #eee8d5; margin-top: 8px; display: block; }
         
-        .axis-label { font-size: 12px; font-weight: bold; fill: #888; text-anchor: end; }
-        .tick text { font-size: 11px; fill: #555; }
+        .axis-label { font-size: 12px; font-weight: bold; fill: #839496; text-anchor: end; }
+        .tick text { font-size: 11px; fill: #657b83; }
         
         /* LINK */
-        .link { fill: none; stroke: #999; stroke-opacity: 0.3; stroke-width: 1.5px; transition: all 0.3s; cursor: pointer; }
-        /* MOUSE HOVER TURN RED */
-        .link.highlighted { stroke-opacity: 1; stroke: #d62728 !important; stroke-width: 3px; }
+        .link { fill: none; transition: all 0.3s; cursor: pointer; }
+        .link.highlighted { stroke-opacity: 1; stroke-width: 3px; }
         
         /* BOOK NODE DESIGN */
         .node circle { cursor: pointer; transition: all 0.3s; stroke: #fff; stroke-width: 2px; }
-        .node:hover circle { stroke: #333; stroke-width: 3px; r: 12px !important; }
+        .node:hover circle { stroke: #073642; stroke-width: 3px; }
         
         /* COUNTOUR TO ADD READABAILITY */
         .node text { 
-            font-size: 11px; fill: #222; text-anchor: middle; pointer-events: none; 
-            paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linecap: round; stroke-linejoin: round; font-weight: 600;
+            font-size: 11px; fill: #586e75; text-anchor: middle; pointer-events: none; 
+            paint-order: stroke; stroke: #fefbec; stroke-width: 4px; stroke-linecap: round; stroke-linejoin: round; font-weight: 600;
         }
 
-        .legend { display: flex; justify-content: center; gap: 25px; margin-bottom: 25px; font-size: 14px; color: #555; }
+        .legend { display: flex; justify-content: center; gap: 25px; margin-bottom: 25px; font-size: 14px; color: #657b83; }
         .legend-item { display: flex; align-items: center; }
-        .legend-dot { width: 14px; height: 14px; border-radius: 50%; margin-right: 8px; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.2); }
+        .legend-dot { width: 14px; height: 14px; border-radius: 50%; margin-right: 8px; border: 2px solid #fefbec; box-shadow: 0 0 2px rgba(88,110,117,0.2); }
     </style>
 </head>
 <body>
@@ -78,12 +78,6 @@
     <h1>WGSS 300: Intellectual Genealogy Map</h1>
     <p class="subtitle">Hover over circles for book details. <strong>Hover over connecting lines to see the relationship.</strong></p>
     
-    <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#4e79a7"></div>Institutional</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#e15759"></div>Group</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#76b7b2"></div>Individual</div>
-    </div>
-
     <div id="chart-container"></div>
     <div class="tooltip" id="tooltip"></div>
 
@@ -95,11 +89,32 @@
     // Merge nodes for simulation (books only)
     const allNodes = [...bookNodes];
 
-    // Link color scale by category
+    // Link color scale by category (Solarized accents with explicit Critical)
     const linkCategories = Array.from(new Set(links.map(l => l.category || "Other")));
+    const solarizedAccents = ["#268bd2", "#2aa198", "#859900", "#b58900", "#cb4b16", "#dc322f", "#d33682", "#6c71c4"];
     const linkColor = d3.scaleOrdinal()
         .domain(linkCategories)
-        .range(["#d62728", "#2ca02c", "#9467bd", "#8c564b", "#17becf", "#ff7f0e", "#1f77b4"].slice(0, linkCategories.length));
+        .range(solarizedAccents.slice(0, linkCategories.length));
+
+    // Add a simple legend for link categories
+    const legendContainer = d3.select("body")
+        .insert("div", "#chart-container")
+        .attr("class", "legend")
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("gap", "16px")
+        .style("margin-bottom", "10px");
+
+    linkCategories.forEach(cat => {
+        const item = legendContainer.append("div").attr("class", "legend-item").style("display", "flex").style("align-items", "center").style("font-size", "14px").style("color", "#657b83");
+        item.append("div")
+            .style("width", "12px")
+            .style("height", "12px")
+            .style("border-radius", "50%")
+            .style("margin-right", "6px")
+            .style("background", linkColor(cat));
+        item.append("span").text(cat);
+    });
 
     // === 2. CANVAS SETUP ===
     const margin = {top: 60, right: 100, bottom: 80, left: 150};
@@ -122,20 +137,19 @@
         .domain([0.5, yearPositions.length + 0.5])
         .range([0, width]);
     const y = d3.scaleOrdinal().domain([1, 2, 3]).range([height * 0.15, height * 0.5, height * 0.85]);
-    const color = d3.scaleOrdinal().domain([1, 2, 3]).range(["#4e79a7", "#e15759", "#76b7b2"]);
 
     // === 4.FORCE SIMULATION ===
     const simulation = d3.forceSimulation(allNodes)
         .force("x", d3.forceX(d => x(yearToPos.get(d.year))).strength(1))
         .force("y", d3.forceY(d => y(d.level)).strength(0.5))
-        .force("collide", d3.forceCollide(() => 20).strength(0.8)) // 防止重叠
+        .force("collide", d3.forceCollide(() => 20).strength(0.8)) 
         .stop();
 
     for (let i = 0; i < 150; ++i) simulation.tick();
 
     // === 5. BACKGROUND ELEMENTS ===
     // GRID LINES AND ZONES
-    const zones = ["Institutional / Law / State", "Group / Class / Race", "Individual / Subject / Body"];
+    const zones = ["Institutional", "Group", "Individual"];
     zones.forEach((label, i) => {
         const yPos = y(i + 1);
         svg.append("line").attr("class", "grid-line")
@@ -167,6 +181,8 @@
         .enter().append("path")
         .attr("class", "link")
         .attr("stroke", d => linkColor(d.category))
+        .attr("stroke-opacity", 0.2)
+        .attr("stroke-width", 2)
         .attr("d", d => {
             const sx = d.source.x, sy = d.source.y;
             const tx = d.target.x, ty = d.target.y;
@@ -186,9 +202,9 @@
         .attr("class", "node book-node")
         .attr("transform", d => `translate(${d.x}, ${d.y})`);
     
-    bookNodeGroup.append("circle") //Standard Book Node Circle
-        .attr("r", 9)
-        .attr("fill", d => color(d.level));
+    bookNodeGroup.append("circle") 
+        .attr("r", 6)
+        .attr("fill", d => d.category === "Influence" ? "#d9cca3" : "#586e75");
 
     // LABEL: Author: Short Title
     bookNodeGroup.append("text")
@@ -199,13 +215,13 @@
 
     // 8.1 MOUSEOVER LINK TO SHOW RELATIONSHIP TOOLTIP
     linkPaths.on("mouseover", (event, d) => {
-        d3.select(event.currentTarget).classed("highlighted", true);
+        d3.select(event.currentTarget).classed("highlighted", true).attr("stroke-opacity", 1);
         // Bring to front
         event.currentTarget.parentNode.appendChild(event.currentTarget);
 
         tooltip.style("opacity", 1)
             .html(`
-                <span class="section-label" style="color:#ff6b6b">Connection Relationship:</span>
+                <span class="section-label" style="color:#dc322f">Connection Relationship:</span>
                 <div style="margin-bottom:8px; font-size:14px;">
                     <strong>${d.source.author}</strong> → <strong>${d.target.author}</strong>
                 </div>
@@ -214,21 +230,19 @@
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY + 10) + "px");
     }).on("mouseout", (event, d) => {
-        d3.select(event.currentTarget).classed("highlighted", false);
+        d3.select(event.currentTarget).classed("highlighted", false).attr("stroke-opacity", 0.2);
         tooltip.style("opacity", 0);
     });
 
     // 8.2 NODE INTERACTIONS
     bookNodeGroup.on("mouseover", (event, d) => {
-        d3.select(event.currentTarget).select("circle").attr("r", 14);
-        
         tooltip.style("opacity", 1)
             .html(`
                 <strong class="title">${d.title}</strong>
                 <span class="meta">${d.author}, ${d.year}</span>
                 
                 <span class="section-label">Key Concepts:</span>
-                <span style="color:#ccc">${d.concepts}</span>
+                <span style="color:#93a1a1">${d.concepts}</span>
                 
                 <span class="section-label">Summary for the Public Reader:</span>
                 <p style="margin:5px 0 0 0; color:#eee; font-style:italic;">${d.summary}</p>
@@ -236,7 +250,6 @@
             .style("left", (event.pageX + 15) + "px")
             .style("top", (event.pageY - 100) + "px");
     }).on("mouseout", (event, d) => {
-        d3.select(event.currentTarget).select("circle").attr("r", 9);
         tooltip.style("opacity", 0);
     });
     

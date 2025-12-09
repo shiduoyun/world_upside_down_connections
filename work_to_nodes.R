@@ -40,10 +40,11 @@ work_nodes <- work %>%
             slugify(title),
             sep = "_"
         ),
+        category = category,
         concepts = key_concepts,
         summary = thesis_summary
     ) %>%
-    select(id, year, author, shortTitle, title, level, concepts, summary)
+    select(id, year, author, shortTitle, title, level, category, concepts, summary)
 
 # Serialize to a JS file
 json_body <- toJSON(work_nodes, auto_unbox = TRUE, pretty = TRUE)
